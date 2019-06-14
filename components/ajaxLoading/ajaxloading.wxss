@@ -1,0 +1,29 @@
+/* components/LL/ajaxLoading.wxss */
+.ajax {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 1500;
+  text-align: center;
+}
+
+.ajax::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 0;
+  visibility: hidden;
+  vertical-align: middle;
+  text-align: center;
+}
+.ajax-img {
+  display: inline-block;
+  vertical-align: middle;
+  width:210rpx;
+  height: 210rpx;
+  background-color:rgba(230, 230, 230, 0.8);
+}
+

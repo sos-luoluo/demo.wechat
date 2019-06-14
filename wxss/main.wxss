@@ -1,0 +1,93 @@
+/**
+* @overview 样式基础设置
+* @author [luoluo]
+* @version 1.0.0
+*/
+
+/*#region 基础样式 */
+movable-view,cover-image,cover-view,movable-area,scroll-view,swiper,swiper-item,view,icon,progress,rich-text,text,button,checkbox,checkbox-group,editor,form,input,label,picker,picker-view,picker-view-column,radio,radio-group,slider,switch,textarea,functional-page-navigator,navigator,audio,camera,image,live-player,live-pusher,video,map,canvas,ad,official-account,open-data,web-view {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 0;
+  box-sizing: border-box;
+  font-family: "SF Pro SC","SF Pro Text","SF Pro Icons","PingFang SC","Helvetica Neue","Helvetica","Arial",sans-serif;
+  vertical-align: baseline;
+  background-color: transparent;
+  word-break: break-all;
+}
+button::after{border: none;}
+image {max-width: 100%;max-height: 100%;font-size: 0;}
+text,.text{word-break:break-all;text-align:justify;}
+textarea{text-align: justify;}
+page{min-width: 100%;min-height: 100%;}
+.navigator-hover {background-color: transparent;}
+.button-hover {background-color: transparent;}
+/*#endregion*/
+
+/*#region 布局 */
+/* 显示方式 */
+.inline_box{display:inline;}
+.inlineblock_box{display:inline-block;}
+.block_box{display:block;}
+.hide{display: none;}
+.borderBox{box-sizing:border-box;}
+/* flex布局 */
+.flex{display:flex;}
+.flex_row{flex-direction: row;}
+.flex_column{flex-direction: column;}
+.flex_middle{align-items:center;}
+.flex_top{align-items:flex-start;}
+.flex_bottom{align-items: flex-end;}
+.flex_start{justify-content: flex-start;}
+.flex_end{justify-content: flex-end;}
+.flex_center{justify-content: center;}
+.flex_justify{justify-content: space-between;}
+.flex_1{flex: 1;}
+.flex_2{flex: 2;}
+/* float布局 */
+.fl{float:left;}
+.fr{float:right;}
+.cf{clear: both;overflow: hidden;}
+.cfa::after {display:block;content:"";clear: both;overflow: hidden;}
+/* 行内块元素布局 */
+.hf{font-size:0;}
+.ftp{display:inline-block;vertical-align:top;}
+.fp{display:inline-block;vertical-align:middle;}
+.fbp{display: inline-block;vertical-align: bottom;}
+/* 对齐方式 */
+.tr{text-align: right;}
+.tl{text-align: left;}
+.tc{text-align: center;}
+/* 通过伪类元素垂直居中 */
+.vm::after{content:"";display:inline-block;height:100%;width:0;visibility:hidden;vertical-align:middle;}
+/*#endregion*/
+
+/*#region 图片相关 */
+/* 图标盒子 */
+.icon{display: inline-block;vertical-align: middle;}
+.imagebox{font-size:0;}
+/*#endregion*/
+
+/*#region 文本相关 */
+/* 两端对齐 */
+.textjustifybreak{word-break:break-all;text-align:justify;}
+/* 单行超出省略 */
+.textellipsis{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.multitextellipsis{display:-webkit-box;position:relative;-webkit-box-orient:vertical;text-overflow:ellipsis;overflow:hidden;}
+/*#endregion*/
+
+/*#region 提升体验 */
+/* 滚动盒子 */
+.scrollbar_box{-webkit-overflow-scrolling:touch;}
+/* 改变输入框placeholder颜色 */
+/* .setplaceholdercolor::-webkit-input-placeholder{color:#eeeeee;} */
+.transitionall{transition: all 0.5s linear 0;}
+/*#endregion*/
+
+/*#region 弹窗 */
+.pop_wrap {position: fixed;top: 0;left: 0;right: 0;bottom: 0;text-align: center;background-color: rgba(0, 0, 0, 0.6);z-index: 1000;}
+.pop_wrap::after{content: "";display: inline-block;height: 100%;width: 0;visibility: hidden;vertical-align: middle;}
+.pop_content {position: relative;display: inline-block;background: #fff;vertical-align: middle;}
+.pop_close {position: absolute;top: 20rpx;right: 20rpx;cursor: pointer;}
+/*#endregion*/

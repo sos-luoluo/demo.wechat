@@ -1,0 +1,15 @@
+<!--components/LL/listTips.wxml-->
+<view class="tips-box" wx:if="{{state===3}}">
+  <text class="tips-line"></text>
+  <text class="tips-text">{{nomoretext}}</text>
+  <text class="tips-line"></text>
+</view>
+<view class="g-no-result-box" wx:if="{{state == 2 }}">
+  <image class="g-no-result-img" src="../../images/ic-no-group.png"></image>
+  <view class="g-no-result-text">{{msg}}</view>
+</view>
+<view class='bottomLoading' wx:if='{{state===0}}'>
+  <view class='bottomLoading-content'>
+    <image class='bottomLoading-img' src="../../images/pic-bottomloading.svg"></image>
+  </view>
+</view>

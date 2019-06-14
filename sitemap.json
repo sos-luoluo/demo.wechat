@@ -1,0 +1,7 @@
+{
+  "desc": "这是demo项目",
+  "rules": [{
+  "action": "allow",
+  "page": "*"
+  }]
+}

@@ -1,0 +1,23 @@
+<view class='updata' style='top:{{css.topHeight}}px;height:{{css.redHeight}}px' wx:if='{{state}}'>
+  <view class='updata-content'>
+    <view class='updata-content-img img-box'>
+      <image src='../../images/pic-update.png'></image>
+    </view>
+    <view class='updata-content-txt'>群TV版本更新</view>
+    <view class='updata-content-list'>
+      <!-- <view class='updata-content-item'>
+        <view class='updata-content-item-radius'></view>
+        <text class='updata-content-item-txt'>新增引导功能</text>
+      </view> -->
+      <!-- <view class='updata-content-item'>
+        <view class='updata-content-item-radius'></view>
+        <text class='updata-content-item-txt'>打赏、弹幕优化</text>
+      </view> -->
+      <view class='updata-content-item' wx:for='{{updataList}}' wx:for-index='index' wx:for-item='item' wx:key='index'>
+        <view class='updata-content-item-radius'></view>
+        <text class='updata-content-item-txt'>{{item}}</text>
+      </view>
+    </view>
+    <view class='updata-content-buttom' catchtap='update'>立即更新</view>
+  </view>
+</view>

@@ -1,0 +1,4 @@
+<!--components/LL/ajaxLoading.wxml-->
+<view class='ajax' hidden="{{!state}}" catchtouchmove=''>
+  <image class='ajax-img' src="../../images/pic-ajaxloading.gif"></image>
+</view>

@@ -1,0 +1,48 @@
+/* components/LL/tips.wxss */
+
+.tips {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3000;
+  pointer-events: none;
+  text-align: center;
+}
+.tips::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 0;
+  visibility: hidden;
+  vertical-align: middle;
+  text-align: center;
+}
+.tips-content{
+  display: inline-block;
+  max-width: 60%;
+  min-width: 320rpx;
+  vertical-align: middle;
+  padding: 40rpx 40rpx 37rpx;
+  background-color: rgba(0,0,0,0.8);
+  border-radius: 5rpx;
+}
+
+.tips-content-icon{
+  text-align: center;
+  font-size: 0;
+}
+
+.tips-content-icon-img{
+  width: 59rpx;
+  height: 59rpx;
+}
+
+.tips-content-text {
+  padding: 19rpx 0;
+  font-size: 30rpx;
+  color: #fff;
+  line-height: 40rpx;
+  font-family: 'PingFang SC';
+}

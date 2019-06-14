@@ -1,0 +1,14 @@
+<view class="navbar-box" style="height:{{navigationBarHeight+statusBarHeight}}px;">
+  <view class="navbar" style="background-color:{{backgroundColor}}">
+    <view style="height: {{statusBarHeight}}px"></view>
+    <view class='navbar-nav' style="height:{{navigationBarHeight}}px;">
+      <view class='navbar-left {{"navbar-left-"+theme}} {{btnNumber>1?"":"navbar-left2"}}'>
+        <navigator open-type="navigateBack" wx:if="{{backEnable}}" class="navbar-btn"></navigator><navigator open-type="switchTab" url="/pages/Home/IndexNew" wx:if="{{homeEnable}}" class="navbar-btn"></navigator><navigator url="/pages/Live/CreateLive" wx:if="{{liveEnable}}" class="navbar-btn"></navigator><navigator url="/pages/Group/CreateChat" wx:if="{{addEnable}}" class="navbar-btn"></navigator>
+      </view>
+      <view class="navbar-redpackets" wx:if="{{redpacketsEnable}}"><image src='./../../images/ic-redpackets.png' class='navbar-redpackets-img' catchtap='redpacketsTips'></image></view>
+      <view class='navbar-title' style='color:{{theme==="light"?"black":"white"}}'>{{title}}</view>
+    </view>
+  </view>
+</view>
+
+<view class='add' style='top:{{navigationBarHeight+statusBarHeight}}px' wx:if="{{addShow}}" catchtap='add'>点击添加到我的小程序</view>

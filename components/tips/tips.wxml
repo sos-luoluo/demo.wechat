@@ -1,0 +1,10 @@
+<!--components/LL/tips.wxml-->
+<!-- 提示信息 -->
+<view class='tips' hidden='{{!state}}'>
+  <view class='tips-content'>
+    <view class='tips-content-icon' wx:if="{{iconName}}">
+      <image src='../../images/{{iconName}}' class='tips-content-icon-img'></image>
+    </view>
+    <view class='tips-content-text'>{{text}}</view>
+  </view>
+</view>

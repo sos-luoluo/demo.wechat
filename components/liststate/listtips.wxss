@@ -1,0 +1,33 @@
+/* components/LL/listTips.wxss */
+@import '../../app';
+
+.tips-box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 40rpx 50rpx;
+  text-align: center;
+}
+
+.tips-line {
+  min-width: 0;
+  flex: 1;
+  height: 0;
+  background-color: #eee;
+}
+
+.tips-text {
+  margin: 0 30rpx;
+  font-size: 28rpx;
+  color: #ccc;
+}
+
+.bottomLoading-content {
+  padding: 0 30rpx;
+  text-align: center;
+}
+
+.bottomLoading-img {
+  width: 80rpx;
+  height: 80rpx;
+}

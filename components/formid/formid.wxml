@@ -1,0 +1,4 @@
+<!--components/LL/Formid.wxml-->
+<form class="formid-box" report-submit="true" data-id="formid" bindsubmit='submit'>
+  <button class='formid-btn' form-type="submit"></button>
+</form>
