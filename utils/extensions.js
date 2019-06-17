@@ -28,4 +28,17 @@ Map.prototype.getLength = function () {
   return count;
 }
 
+/**
+ * 将对象转变为字符,不支持递归
+ */
+Object.defineProperty(Object.prototype,'string',{
+  value: function () {
+    const result = []
+    for (let key in this) {
+      result.push(key + '=' + this[key])
+    }
+    return result.join("&")
+  }
+})
+
 export default undefined

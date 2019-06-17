@@ -1,5 +1,6 @@
 import { key, ajaxConfig} from "./config";
 import {extend} from "./base.js"
+import store from "./store.js"
 
 /**
  * ajax请求二次封装
@@ -39,6 +40,7 @@ class Ajax {
       'content-type': "application/x-www-form-urlencoded"
     },
     url: "",
+    cache: false,
     urlAuto: true,
     type: "POST",
     data: {},
@@ -95,6 +97,7 @@ class Ajax {
    * @param {string} confirmText 确认弹窗提示信息
    * @param {string} type 请求方式
    * @param {object} data 参数
+   * @param {boolean} cache 是否缓存结果
    * @param {boolean} urlAuto 是否自动处理请求地址，可以用来处理特殊请求
    */
   request(options) {
@@ -107,6 +110,11 @@ class Ajax {
     }
     return new Promise((resolve, reject) => {
       this.confirm(config.confirmText, () => {
+        let key = config.url + data.string()
+        if (config.cache && store.has(key)){
+          resolve(store.get(key));
+          return
+        }
         if (config.id) {
           if (this.temp[config.id]) {
             reject({
@@ -139,6 +147,9 @@ class Ajax {
               if (XHR.data && XHR.data.code === 0) {
                 config.success && config.success(XHR.data);
                 resolve(XHR.data);
+                if (config.cache){
+                  store.set(key, XHR.data)
+                }
               } else {
                 config.fail && config.fail(XHR.data);
                 reject(XHR.data);

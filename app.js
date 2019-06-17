@@ -1,5 +1,5 @@
 //app.js
-import wxp from './utils/wxp.js'
+import './utils/extensions.js'
 
 App({
   onLaunch: function () {
