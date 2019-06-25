@@ -6,7 +6,7 @@
   right: 0;
   bottom: 0;
   background-color: transparent;
-  z-index: 1500;
+  z-index: 1000;
   text-align: center;
 }
 
@@ -24,6 +24,6 @@
   vertical-align: middle;
   width:210rpx;
   height: 210rpx;
-  background-color:rgba(230, 230, 230, 0.8);
+  margin-top: -100rpx;
 }
 

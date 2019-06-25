@@ -1,9 +1,3 @@
 //app.js
-import './utils/extensions.js'
-
-App({
-  onLaunch: function () {
-  },
-  globalData: {
-  }
-})
+import LL from './utils/index.js'
+App(new LL.AppBase())

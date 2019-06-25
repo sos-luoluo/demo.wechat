@@ -1,11 +1,5 @@
-import {
-  pageConfig,
-  key,
-  ajaxConfig
-} from './config.js'
-import {
-  ajax
-} from './ajax.js'
+import { pageConfig, key, ajaxConfig} from './config.js'
+import { ajax } from './ajax.js'
 
 /**
  * 登录方法

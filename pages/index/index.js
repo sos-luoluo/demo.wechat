@@ -1,10 +1,23 @@
 //index.js
-//获取应用实例
-const app = getApp()
+import PageBase from '../../utils/pagebase.js'
 
-Page({
-  data: {
+Page(new PageBase({
+  isNeedLogin: true,
+  onShow(){
+    this.dataSync.ajaxData=[{},{a:2}]
+    this.nextTick(() => {
+      console.log(JSON.stringify(this.data))
+    })
+    this.dataSync.ajaxData[0].a=5
+    this.nextTick(()=>{
+    })
+    setTimeout(()=>{
+      this.dataSync.sysData.pageCode = 2
+      this.nextTick(() => {
+      })
+    },1000)
   },
-  onLoad: function () {
+  bindData(resolve,reject){
+    resolve()
   }
-})
+}))

@@ -47,21 +47,6 @@ export function extend() {
   return result;
 }
 
-
-/**
- * 判断一个对象是否为数组
- * @param {object} obj 对象
- */
-export function isArray(obj) {
-  return (
-    obj &&
-    typeof obj === "object" &&
-    typeof obj.length === "number" &&
-    typeof obj.splice === "function" &&
-    !obj.propertyIsEnumerable("length")
-  );
-}
-
 /**
  * 延迟对象
  * @constructor

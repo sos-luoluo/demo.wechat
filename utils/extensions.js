@@ -40,5 +40,23 @@ Object.defineProperty(Object.prototype,'string',{
     return result.join("&")
   }
 })
+/**
+ * 判断对象是否为空对象
+ */
+Object.defineProperty(Object.prototype,'isEmpty',{
+  value:function(){
+    const keys = Object.keys(this)
+    return keys.length === 0
+  }
+})
+/**
+ * 判断对象是否为数组
+ */
+Object.defineProperty(Object.prototype, 'isArray', {
+  value: function () {
+    return typeof this === "object" && typeof this.length === "number" && typeof this.splice === "function"
+  }
+})
+
 
 export default undefined

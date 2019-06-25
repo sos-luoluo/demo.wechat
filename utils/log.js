@@ -5,3 +5,8 @@
  * @author [luoluo]
  * @version 2.0.0
  */
+class LogManager{
+
+}
+
+export default LogManager

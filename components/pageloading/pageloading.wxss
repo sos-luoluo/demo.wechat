@@ -1,0 +1,53 @@
+/* components/pageloading/pageloading.wxss */
+.pagestate {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  z-index: 2000;
+  text-align: center;
+}
+
+.pagestate::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 0;
+  visibility: hidden;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.pagestate-content {
+  width: 50%;
+  display: inline-block;
+  margin-top: -400rpx;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.pageloading-img {
+  width: 200rpx;
+  height: 200rpx;
+}
+.pageerror-img {
+  width: 260rpx;
+}
+
+.pageloading-text {
+  width: 100%;
+  padding-top: 20rpx;
+  font-size: 32rpx;
+  color: #aaa;
+  text-align: center;
+}
+
+.pageerror-text {
+  width: 100%;
+  padding-top: 20rpx;
+  font-size: 28rpx;
+  color: #c5ebff;
+  text-align: center;
+}

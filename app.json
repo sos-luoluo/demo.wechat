@@ -8,5 +8,9 @@
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
   },
+  "usingComponents":{
+    "ajaxloading": "components/ajaxloading/ajaxloading",
+    "pageloading": "components/pageloading/pageloading"
+  },
   "sitemapLocation": "sitemap.json"
 }

@@ -1,6 +1,6 @@
 import { key, ajaxConfig} from "./config";
 import {extend} from "./base.js"
-import store from "./store.js"
+import {store} from "./store.js"
 
 /**
  * ajax请求二次封装
@@ -110,7 +110,7 @@ class Ajax {
     }
     return new Promise((resolve, reject) => {
       this.confirm(config.confirmText, () => {
-        let key = config.url + data.string()
+        let key = config.url + (typeof config.data === 'object' ? config.data.string():'')
         if (config.cache && store.has(key)){
           resolve(store.get(key));
           return
@@ -192,7 +192,7 @@ export const ajax = (options, page) => {
  * @param {object} options 配置参数
  * @param {object} page 页面this对象
  */
-class listAjax {
+class ListAjax {
   constructor(options, page) {
     this.listState = 0;
     this.pageTotal = 1;

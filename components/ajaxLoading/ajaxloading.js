@@ -4,14 +4,17 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    
+    state: {
+      type: Number,
+      value: 0
+    }
   },
 
   /**
    * 组件的初始数据
    */
   data: {
-    state: false
+    
   },
 
   /**
@@ -20,12 +23,12 @@ Component({
   methods: {
     show(){
       this.setData({
-        'state': true
+        'state': this.data.state + 1
       })
     },
     hide(){
       this.setData({
-        'state': false
+        'state': this.data.state - 1
       })
     }
   }

@@ -1,12 +1,6 @@
-import {
-  wordLib
-} from './constants';
-import {
-  imgURLHead
-} from './config';
-import {
-  extend
-} from './base.js'
+import { wordLib } from './constants';
+import { imgURLHead } from './config';
+import { extend } from './base.js'
 
 /**
  * 工具箱

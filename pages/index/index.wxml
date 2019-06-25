@@ -1,4 +1,7 @@
 <!--index.wxml-->
+<!-- 公共组件 -->
+<ajaxloading id="ajaxloading" state="{{sysData.ajaxLoading}}"></ajaxloading>
+<pageloading id="pageloading" state="{{sysData.pageCode}}"></pageloading>
 <view class="container">
 这是demo项目
 </view>

@@ -1,0 +1,12 @@
+<!--components/pageloading/pageloading.wxml-->
+<view class='pagestate' wx:if="{{state===0||state===1||state===3||state===5}}">
+  <view class='pagestate-content'>
+    <image class='pageloading-img' src="../../images/pageloading.svg"></image>
+  </view>
+</view>
+<view class="pagestate" wx:elif="{{state===2||state===4||state===6}}">
+  <view class="pagestate-content">
+    <image class="pageerror-img" src="../../images/pageerror.png" mode="widthFix"></image>
+    <view class="pageerror-text">信号开小差啦~</view>
+  </view>
+</view>
