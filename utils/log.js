@@ -6,7 +6,22 @@
  * @version 2.0.0
  */
 class LogManager{
-
+  constructor(){
+    this.logList=wx.getStorageSync('log')||[]
+  }
+  addMsg(msg){
+    if (this.logList.length>100){
+      this.logList.shift()
+    }
+    this.logList.push(msg)
+  }
+  clear(){
+    this.logList=[]
+    this.save()
+  }
+  save(){
+    wx.setStorageSync('log', this.logList)
+  }
 }
 
 export default LogManager

@@ -34,9 +34,11 @@ AppBase.prototype.onShow = function(param) {
   this._options && this._options.onShow && this._options.onShow.call(this, param)
 }
 AppBase.prototype.onHide = function(param) {
+  this.logManager.save()
   this._options && this._options.onHide && this._options.onHide.call(this, param)
 }
 AppBase.prototype.onError = function(param) {
+  this.logManager.addMsg(param)
   this._options && this._options.onError && this._options.onError.call(this, param)
 }
 AppBase.prototype.onPageNotFound = function(param) {

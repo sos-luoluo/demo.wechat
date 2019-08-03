@@ -5,3 +5,4 @@
 <view class="container">
 这是demo项目
 </view>
+<view data-id='a' data-index='2' catchtap='event'>{{testData}}</view>

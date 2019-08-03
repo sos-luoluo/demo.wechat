@@ -71,7 +71,7 @@ const defaultData = {
   // 系统数据
   sysData: {
     isNeedLogin: false, // 是否需要登录
-    pageCode: 0, //页面状态码定义 0未初始化，1初始化，2权限验证未通过，3请求数据中，4请求数据失败，5页面渲染中，6页面渲染失败，7页面正常进入，8页面隐藏
+    pageCode: 0, //页面状态码定义 0未初始化，1初始化，2权限验证未通过，3请求数据中，4请求数据失败，5页面渲染中，6页面渲染失败，7页面绑定事件失败，8页面正常进入，9页面隐藏
     pageTimes: 0, //页面进入的次数
     pageRefreshLevel: 0,// 页面刷新级别 0不刷新，1全部刷新，2刷新ajax,3页面局部刷新；
     ajaxLoading: 0, //ajaxLoading计数器
@@ -88,12 +88,7 @@ function PageBase(options){
   if (options&&options.isNeedLogin) {
     this.data.sysData.isNeedLogin = true
   }
-  this.eventManagement = new EventManagement()
-  this.init()
-}
-PageBase.prototype.init = function (){
-  // 注册事件
-  this.registerEvent = this.eventManagement.registerEvent.bind(this.eventManagement)
+  options && options.init && options.init()
   this.data.sysData.pageCode = 1
 }
 PageBase.prototype.onLoad = function (param){
@@ -101,20 +96,24 @@ PageBase.prototype.onLoad = function (param){
   this.dataSync = new DataSync(extend(true, {}, this.data), '', (path, value) => {
     this.updateData.setData(path, value)
   })
+  this.eventManagement = new EventManagement(this)
+  this.registerEvent = this.eventManagement.registerEvent.bind(this.eventManagement)
   this.authentication().then(res => {
     this.ajaxLoad(param).then(result => {
-      this.dataSync.sysData.pageCode = 7
-      this._options && this._options.onLoad && this._options.onLoad.call(this,param)
-      this.onReady()
+      this.bindEvent(result).then((res)=>{
+        this.dataSync.sysData.pageCode = 8
+        this._options && this._options.onLoad && this._options.onLoad.call(this, param)
+        this.onReady()
+      })
     })
   })
 }
-PageBase.prototype.onReady=function(){
+PageBase.prototype.onReady=function(){ 
   this._options && this._options.onReady && this._options.onReady.call(this)
 }
 PageBase.prototype.onShow=function(){
-  if (this.data.sysData.pageCode === 8) {
-    this.dataSync.sysData.pageCode === 7
+  if (this.data.sysData.pageCode === 9) {
+    this.dataSync.sysData.pageCode === 8
   }
   this.data.sysData.pageTimes++
   if (this.data.sysData.pageTimes > 1) {
@@ -123,8 +122,8 @@ PageBase.prototype.onShow=function(){
   this._options && this._options.onShow && this._options.onShow.call(this)
 }
 PageBase.prototype.onHide=function(){
-  if (this.data.sysData.pageCode === 7) {
-    this.dataSync.sysData.pageCode === 8
+  if (this.data.sysData.pageCode === 8) {
+    this.dataSync.sysData.pageCode === 9
   }
   this._options && this._options.onHide && this._options.onHide.call(this)
 }
@@ -155,27 +154,40 @@ PageBase.prototype.authentication=function(){
 }
 PageBase.prototype.ajaxLoad=function(){
   return new Promise((resolve, reject) => {
-    this._options && this._options.bindData && this._options.bindData.call(this, resolve, reject)
+    if (this._options && this._options.bindData){
+      this._options.bindData.call(this, resolve, reject)
+    }else{
+      resolve()
+    }
     this.dataSync.sysData.pageCode = 3
   }).catch(err => {
     this.dataSync.sysData.pageCode = 4
   })
 }
+PageBase.prototype.bindEvent=function(){
+  return new Promise((resolve, reject)=>{
+    if (this._options && this._options.bindEvent) {
+      this._options.bindEvent.call(this, resolve, reject)
+    } else {
+      resolve()
+    }
+  }).catch(err => {
+    this.dataSync.sysData.pageCode = 7
+  })
+}
 PageBase.prototype.pageRefresh = function (isRefresh){
-  const pages = getCurrentPages()
-  const page = pages[pages.length - 1]
   // 强制刷新,最高级别，并且是刷新整个页面
   if (isRefresh) {
-    this.onLoad(page.options)
+    this.onLoad(this.options)
     return
   }
   // 在页面要求登录而未登录的时候刷新，在页面未成功加载的时候刷新整个页面，较高级别
-  if (this.data.sysData.pageCode < 7) {
-    this.onLoad(page.options)
+  if (this.data.sysData.pageCode < 8) {
+    this.onLoad(this.options)
     return
   }
   if (this.data.sysData.pageRefreshLevel === 1) {
-    this.onLoad(page.options)
+    this.onLoad(this.options)
   } else if (this.data.sysData.pageRefreshLevel === 2) {
     this.ajaxLoad()
   }

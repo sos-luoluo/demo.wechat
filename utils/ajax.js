@@ -4,7 +4,6 @@ import {store} from "./store.js"
 
 /**
  * ajax请求二次封装
- * @overview 在jquery上二次封装的请求方法
  * @author [luoluo]
  * @version 2.0.0
  */

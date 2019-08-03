@@ -53,6 +53,9 @@ appBase:
 
 主要代码已完成，进行测试和调试
 
+生命周期过程
+对象初始化>page初始化>onload(挂载额外方法与对象)>权限验证>数据加载与页面渲染>事件注册>onready>onshow>onhide>onunload
+
 
 vue框架实现
 数据自动同步和绑定
