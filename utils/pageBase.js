@@ -56,6 +56,10 @@ class EventManagement {
 
 // 定义的data数据结构
 const defaultData = {
+  // css样式数据
+  cssData: {
+
+  },
   // 页面数据
   pageData: {
 
@@ -101,7 +105,7 @@ PageBase.prototype.onLoad = function (param){
   this.authentication().then(res => {
     this.ajaxLoad(param).then(result => {
       this.bindEvent(result).then((res)=>{
-        this.dataSync.sysData.pageCode = 8
+        this.data.sysData.pageCode = 8
         this._options && this._options.onLoad && this._options.onLoad.call(this, param)
         this.onReady()
       })
@@ -138,6 +142,15 @@ PageBase.prototype.onReachBottom = function () {
 }
 PageBase.prototype.onShareAppMessage = function () {
   this._options && this._options.onShareAppMessage && this._options.onShareAppMessage.call(this)
+}
+PageBase.prototype.onPageScroll = function () {
+  this._options && this._options.onPageScroll && this._options.onPageScroll.call(this)
+}
+PageBase.prototype.onResize = function () {
+  this._options && this._options.onResize && this._options.onResize.call(this)
+}
+PageBase.prototype.onTabItemTap = function () {
+  this._options && this._options.onTabItemTap && this._options.onTabItemTap.call(this)
 }
 PageBase.prototype.authentication=function(){
   return new Promise((resolve, reject) => {

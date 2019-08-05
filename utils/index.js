@@ -10,9 +10,9 @@ import wxp from './wxp.js'
 
 
 export default {
-  ajax: ajax,
-  ListAjax: ListAjax,
-  AppBase: AppBase,
+  ajax,
+  ListAjax,
+  AppBase,
   extend,
   Deferred,
   deferredAll,
