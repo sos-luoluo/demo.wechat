@@ -1,5 +1,5 @@
 import { wordLib } from './constants';
-import { imgURLHead } from './config';
+import { imgURLHead, ajaxConfig, key} from './config';
 import { extend } from './base.js'
 
 /**
@@ -18,7 +18,7 @@ export default {
     return imgURLHead + url
   },
   /**
-   * 时间戳转化为指定格式，例yyyy-mm-dd hh:nn:ss ww
+   * 时间戳转化为指定格式，例yyyy-MM-dd hh:mm:ss ww
    * @param {number} timestamp 时间戳
    * @param {string} format 输出格式
    */
@@ -30,6 +30,7 @@ export default {
       timestamp = timestamp * 1000;
     }
     const time = new Date(timestamp);
+    
     const week = wordLib.week;
     const y = time.getFullYear();
     const M = time.getMonth() + 1;
@@ -37,15 +38,54 @@ export default {
     const h = time.getHours();
     const m = time.getMinutes();
     const s = time.getSeconds();
-    format = format.replace(/[y]{4}/i, y);
-    format = format.replace(/[m]{2}/i, M > 9 ? M : "0" + M)
-    format = format.replace(/[d]{2}/i, d > 9 ? d : "0" + d);
-    format = format.replace(/[h]{2}/i, h > 9 ? h : "0" + h);
-    format = format.replace(/[n]{2}/i, m > 9 ? m : "0" + m);
-    format = format.replace(/[s]{2}/i, s > 9 ? s : "0" + s);
-    format = format.replace(/[w]{2}/i, week[time.getDay()]);
+    format = format.replace(/[y]{4}/, y);
+    format = format.replace(/[M]{2}/, M > 9 ? M : "0" + M);
+    format = format.replace(/[d]{2}/, d > 9 ? d : "0" + d);
+    format = format.replace(/[h]{2}/, h > 9 ? h : "0" + h);
+    format = format.replace(/[m]{2}/, m > 9 ? m : "0" + m);
+    format = format.replace(/[s]{2}/, s > 9 ? s : "0" + s);
+    format = format.replace(/[w]{2}/, week[time.getDay()]);
     return format;
   },
+
+  /**
+   * 时间戳转化为指定格式，例yyyy-mm-dd hh:nn:ss ww
+   * @param {number} timestamp 时间戳
+   * @param {string} format 输出格式
+   */
+  parseTime:function(time, cFormat) {
+    if (arguments.length === 0) {
+      return null
+    }
+    if (!time) return null
+    const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+    let date
+    if (typeof time === 'object') {
+      date = time
+    } else {
+      if (('' + time).length === 10) time = parseInt(time) * 1000
+      date = new Date(time)
+    }
+    const formatObj = {
+      y: date.getFullYear(),
+      m: date.getMonth() + 1,
+      d: date.getDate(),
+      h: date.getHours(),
+      i: date.getMinutes(),
+      s: date.getSeconds(),
+      a: date.getDay()
+    }
+    const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
+      let value = formatObj[key]
+      if (key === 'a') return ['一', '二', '三', '四', '五', '六', '日'][value - 1]
+      if (result.length > 0 && value < 10) {
+        value = '0' + value
+      }
+      return value || 0
+    })
+    return time_str
+  },
+
   /**
    * 日期转化为指定格式
    * @param {string} date 日期
@@ -162,8 +202,10 @@ export default {
       return Math.floor(difference / (1000 * 60)) + "分钟以前";
     } else if (difference < 24 * 60 * 60 * 1000) {
       return Math.floor(difference / (1000 * 60 * 60)) + "小时以前";
+    } else if (difference < 10*24 * 60 * 60 * 1000){
+      return Math.floor(difference / (1000 * 60 * 60*24)) + "天以前";
     } else {
-      return this.dateFormat(Math.floor(time / 1000), "yyyy-mm-dd");
+      return this.dateFormat(Math.floor(time), "yyyy-MM-dd");
     }
   },
   /**
@@ -209,19 +251,6 @@ export default {
     return JSON.parse(JSON.stringify(data));
   },
   /**
-   * 地址跳转
-   * @param {string} url 跳转地址
-   * @param {boolean} isReplace 是否保存本页历史记录
-   */
-  urlJump: function(url, isReplace) {
-    url = url || "/"
-    if (isReplace === true) {
-      window.location.replace(url);
-    } else {
-      window.location.href = url;
-    }
-  },
-  /**
    * 验证码计时器
    * @param {object} options 配置项
    * @param {object} that 页面this
@@ -244,27 +273,6 @@ export default {
           clearInterval(stopTime)
         }
     }, 1000)
-  },
-  /**
-   * 在页面onshow的时候调用制定方法以刷新数据或页面
-   * @param {object} options 配置
-   * @param {object} that 页面this
-   */
-  refreshPageOnShow: function(options, that) {
-    const setting = LL.extend({
-      parameter: {}, //参数
-      refreshMethod: function() {}, //刷新调用的方法
-      onShow: that.onShow,
-      onHide: that.onHide
-    }, options)
-    that.data.refresh = true
-    that.onShow = function(para) {
-      if (!that.data.refresh) {
-        setting.refreshMethod.call(that, setting.parameter)
-      }
-      that.data.refresh = false
-      setting.onShow.call(that, para)
-    }
   },
   /**
    * 转换内存大小
@@ -359,6 +367,70 @@ export default {
             height: maxHeight
           }
         }
+    }
+  },
+  /**
+   * 上传图片方法
+   * @param {object} options 配置参数
+   */
+  uploadImg: function(options) {
+    var setting = extend({
+      hasLoading: true, // 是否有loading
+      url: ajaxConfig.urlHead + ajaxConfig.imgUpload,
+      count: 1, //图片数量
+      name: "imagefile", //后台接收的key，
+      path: [], //图片路径,
+      result: [],
+      success: function() {},
+      fail: function() {}
+    }, options)
+    wx.chooseImage({
+      count: setting.count,
+      sizeType: ["compressed"],
+      success: function(res) {
+        setting.path = res.tempFilePaths
+        if (setting.hasLoading) {
+          wx.showLoading({
+            title: "上传中",
+            mask: true
+          })
+        }
+        uploadImg()
+      },
+      fail: function(res) {
+        setting.fail(res);
+      }
+    })
+
+    function uploadImg() {
+      const state = setting.path.map(function(item) {
+        return new Promise((resolve, reject) => {
+          wx.uploadFile({
+            url: setting.url,
+            filePath: item,
+            name: setting.name,
+            header: {
+              Authorization: 'Bearer ' + wx.getStorageSync(key.tokenKey)
+            },
+            success: function(res) {
+              try {
+                res.data = JSON.parse(res.data)
+              } catch (e) {}
+              resolve(res.data.data.path)
+            },
+            fail: function(res) {
+              reject(res.data)
+            }
+          })
+        })
+      })
+      Promise.all(state).then((res) => {
+        wx.hideLoading()
+        setting.success(res)
+      }).catch((res) => {
+        wx.hideLoading()
+        setting.fail(res)
+      })
     }
   }
 }

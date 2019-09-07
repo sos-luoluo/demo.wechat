@@ -12,17 +12,25 @@
  * @param {object} obj 待合并对象数组
  */
 export function extend() {
+  let result
   if (typeof arguments[0] === "boolean" && arguments[0] === true) {
     for (let k = 1; k < arguments.length; k++) {
-      if (typeof arguments[k] === "object") {
+      if (typeof arguments[k] === "object" && arguments[k]!==null) {
         if (!result) {
-          var result = arguments[k];
+          result = arguments[k];
           continue;
         }
         for (const key in arguments[k]) {
-          if (typeof arguments[k][key] === "object") {
+          if (typeof arguments[k][key] === "object" && arguments[k][key] !== null) {
+            if (!result[key]){
+              if (arguments[k][key].isArray()){
+                result[key] = []
+              }else{
+                result[key] = {}
+              }
+            }
             result[key] = extend(true, result[key], arguments[k][key]);
-          } else if (arguments[k][key]) {
+          } else {
             result[key] = arguments[k][key];
           }
         }
@@ -32,10 +40,9 @@ export function extend() {
     for (let i = 0; i <= arguments.length; i++) {
       if (typeof arguments[i] === "object") {
         if (!result) {
-          var result = arguments[i];
+          result = arguments[i];
           continue;
         }
-
         for (const key in arguments[i]) {
           if (arguments[i][key]) {
             result[key] = arguments[i][key];

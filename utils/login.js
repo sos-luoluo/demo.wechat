@@ -17,17 +17,10 @@ class CodeManager {
   code = ""
   getCode(callback) {
     return new Promise((resolve, reject) => {
-      wx.checkSession({
+      wx.login({
         success: res => {
-          resolve(this.code)
-        },
-        fail: res => {
-          wx.login({
-            success: res => {
-              this.code = res.code
-              resolve(res.code)
-            }
-          })
+          this.code = res.code
+          resolve(res.code)
         }
       })
     })
@@ -85,19 +78,41 @@ function getUserInfo() {
  * @return Promise
  */
 export default function login() {
-  return new Promise((resolve, jectct) => {
+  return new Promise((resolve, reject) => {
     if (checkLogin()) {
       getUserInfo().then(res => {
         resolve(res.data)
+      }).catch(err=>{
+        wx.showToast({
+          title: "未获取到用户信息，请稍后再试",
+          icon: "none",
+          duration: 2000
+        })
+        reject(err)
       })
     } else {
       Promise.all([codeManager.getCode(), getWechatInfo()]).then((res) => {
         ajax({
-          url: ajaxConfig.loginPort
+          url: ajaxConfig.loginPort,
+          data:{
+            code: res[0],
+            encryptedData: res[1].encryptedData,
+            iv: res[1].iv,
+          }
         }).then(res => {
-          const app = getApp()
-          app.globalData.userInfo = res.data
-          resolve(res.data)
+          wx.setStorageSync(key.tokenKey, res.data.token)
+          getUserInfo().then(res=>{
+            const app = getApp()
+            app.globalData.userInfo = res.data
+            resolve(res.data)
+          })
+        }).catch(err=>{
+          wx.showToast({
+            title: "登录失败，请稍后再试",
+            icon: "none",
+            duration: 2000
+          })
+          reject(err)
         })
       })
     }

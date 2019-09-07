@@ -8,5 +8,6 @@
 .content{
   overflow: visible;
   position: absolute;
+  top:0;
   opacity: 1;
 }

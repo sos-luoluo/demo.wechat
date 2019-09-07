@@ -26,7 +26,7 @@ class EventManagement {
    * @param {function} name 回调函数
    */
   registerEvent(name, fn) {
-    if (!eventPool[name]) {
+    if (!this.eventPool[name]) {
       this.eventPool[name] = fn
     } else {
       console.error('事件注册失败,' + name + '事件已被注册!')
@@ -37,9 +37,9 @@ class EventManagement {
    * @param {string} name 事件名
    * @param {any} param 参数
    */
-  implementEvent(name, param) {
-    if (eventPool[name]) {
-      this.eventPool[name].call(this.that, param)
+  implementEvent(name, ...param) {
+    if (this.eventPool[name]) {
+      this.eventPool[name].apply(this.that, param)
     } else {
       console.error('事件未注册！')
     }
@@ -77,7 +77,7 @@ const defaultData = {
     isNeedLogin: false, // 是否需要登录
     pageCode: 0, //页面状态码定义 0未初始化，1初始化，2权限验证未通过，3请求数据中，4请求数据失败，5页面渲染中，6页面渲染失败，7页面绑定事件失败，8页面正常进入，9页面隐藏
     pageTimes: 0, //页面进入的次数
-    pageRefreshLevel: 0,// 页面刷新级别 0不刷新，1全部刷新，2刷新ajax,3页面局部刷新；
+    pageRefreshLevel: 0,// 页面刷新级别 0不刷新，1全部刷新，2刷新ajax,3自定义刷新；
     ajaxLoading: 0, //ajaxLoading计数器
   }
 }
@@ -87,10 +87,14 @@ function PageBase(options){
   if (options && options.data && typeof options.data === 'object') {
     this.data = extend(true,{}, defaultData, options.data)
   }else{
+    var b = extend
     this.data = extend(true,{}, defaultData)
   }
   if (options&&options.isNeedLogin) {
     this.data.sysData.isNeedLogin = true
+  }
+  if (options && options.pageRefreshLevel) {
+    this.data.sysData.pageRefreshLevel = options.pageRefreshLevel
   }
   options && options.init && options.init()
   this.data.sysData.pageCode = 1
@@ -102,31 +106,59 @@ PageBase.prototype.onLoad = function (param){
   })
   this.eventManagement = new EventManagement(this)
   this.registerEvent = this.eventManagement.registerEvent.bind(this.eventManagement)
+  this.input=(e)=>{
+    if(e.type=="input"){
+      this.dataSync.pageData[e.currentTarget.dataset.name]=e.detail.value
+    }
+  }
   this.authentication().then(res => {
+    this.dataSync.userData=res
     this.ajaxLoad(param).then(result => {
       this.bindEvent(result).then((res)=>{
-        this.data.sysData.pageCode = 8
+        this.dataSync.sysData.pageCode = 8
         this._options && this._options.onLoad && this._options.onLoad.call(this, param)
         this.onReady()
       })
     })
+  }).catch(err=>{
+    console.log(err)
   })
 }
-PageBase.prototype.onReady=function(){ 
+PageBase.prototype.onReady=function(){
+  let tips = this.selectComponent("#tips")
+  if (tips) {
+    this.showTips =function(){
+      tips.showTips(...arguments)
+    }
+  } else {
+    this.showTips = (msg, icon,cb) => {
+      wx.showToast({
+        title: msg,
+        icon: icon,
+        success: () => {
+          if (cb && typeof cb === "function") {
+            setTimeout(() => {
+              cb()
+            }, 200)
+          }
+        }
+      })
+    }
+  }
   this._options && this._options.onReady && this._options.onReady.call(this)
 }
 PageBase.prototype.onShow=function(){
   if (this.data.sysData.pageCode === 9) {
     this.dataSync.sysData.pageCode === 8
   }
-  this.data.sysData.pageTimes++
-  if (this.data.sysData.pageTimes > 1) {
+  this.dataSync.sysData.pageTimes++
+  if (this.dataSync.sysData.pageTimes > 1) {
     this.pageRefresh()
   }
   this._options && this._options.onShow && this._options.onShow.call(this)
 }
 PageBase.prototype.onHide=function(){
-  if (this.data.sysData.pageCode === 8) {
+  if (this.dataSync.sysData.pageCode === 8) {
     this.dataSync.sysData.pageCode === 9
   }
   this._options && this._options.onHide && this._options.onHide.call(this)
@@ -161,7 +193,7 @@ PageBase.prototype.authentication=function(){
         this.dataSync.sysData.pageCode = 2
       })
     } else {
-      resolve()
+      resolve({})
     }
   })
 }
@@ -172,9 +204,12 @@ PageBase.prototype.ajaxLoad=function(){
     }else{
       resolve()
     }
-    this.dataSync.sysData.pageCode = 3
+    if (this.dataSync.sysData.pageCode == 2){
+      this.dataSync.sysData.pageCode = 3
+    }
   }).catch(err => {
     this.dataSync.sysData.pageCode = 4
+    throw new Error(err)
   })
 }
 PageBase.prototype.bindEvent=function(){
@@ -203,11 +238,15 @@ PageBase.prototype.pageRefresh = function (isRefresh){
     this.onLoad(this.options)
   } else if (this.data.sysData.pageRefreshLevel === 2) {
     this.ajaxLoad()
+  } else if (this.data.sysData.pageRefreshLevel === 3){
+    if (this._options.refreshPage && typeof this._options.refreshPage==='function'){
+      this._options.refreshPage.call(this)
+    }
   }
 }
 PageBase.prototype.event=function(e){
   if (e.currentTarget.dataset.id) {
-    this.eventManagement.implementEvent.call(this.eventManagement, e.currentTarget.dataset.id, e.currentTarget.dataset)
+    this.eventManagement.implementEvent(e.currentTarget.dataset.id, e.detail, e.currentTarget.dataset,e.type)
   } else {
     console.error('未绑定事件ID！')
   }

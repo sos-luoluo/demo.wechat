@@ -15,6 +15,9 @@ class LogManager{
     }
     this.logList.push(msg)
   }
+  getData(){
+    return this.logList
+  }
   clear(){
     this.logList=[]
     this.save()

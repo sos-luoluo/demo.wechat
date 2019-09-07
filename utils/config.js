@@ -36,12 +36,18 @@ export const projectInfo = {
  * @property {string} loadingText loading显示的文字
  */
 export const ajaxConfig = {
-  urlHead: environment === "development" ? "http://www.iquntv.com/qtv" : "/qtv",
-  userInfoPort: "/wechat/user/info",
-  loginPort: "",
+
+ // urlHead: environment === "development" ? "http://192.168.0.136:8072/api/v1" : "http://39.108.171.138/api/v1",
+  // urlHead: environment === "development" ? "http://192.168.0.136:8072/api/v1":"http://192.168.0.104:8072/api/v1" ,
+
+  // urlHead: 'http://192.168.0.136:8072/api/v1',
+  urlHead: 'https://www.betterdiet.com/api/v1',
+  wxHead: 'ws://www.betterdiet.com/api/v1/websocket',
+  userInfoPort: "/user/detail",
+  loginPort: "/user/login",
   payPort: "/order/joinGroup",
   getPhonePort: "/member/GetWechatPhoneModelInXcx",
-  imgUpload: "",
+  imgUpload: "/public/upload",
   fileUpload: "",
   loadingText: "加载中"
 }
@@ -52,8 +58,8 @@ export const ajaxConfig = {
  * @property {string} login 登录页面
  */
 export const pageConfig = {
-  home: "/pages/Home/Index",
-  login: "/pages/Home/login"
+  home: "/pages/home/index",
+  login: "/pages/home/login"
 }
 
 /**

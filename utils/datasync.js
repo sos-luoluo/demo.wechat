@@ -1,3 +1,4 @@
+import {extend} from './base.js'
 /**
  * 构造一个对象，这个对象要实现的功能
  * 继承父元素的路径，并且记录自己的路径
@@ -29,25 +30,27 @@ export class DataSync {
    */
   hanler = {
     get: (target, prop) => {
-      if (target[prop]) {
-        return target[prop]
-      } else {
-        return undefined
-      }
+      return target[prop]
     },
     set: (target, prop, value) => {
       if (target[prop] !== value) {
-        if (typeof value === 'object') {
-          if (value.isArray()){
+        if (typeof value === 'object' && value!==null) {
+          if (target.isArray()){
             target[prop] = new DataSync(value, this.path ? (this.path + '[' + prop + ']') : prop , this.onChange)
+            if (this.onChange) {
+              this.onChange(this.path ? (this.path + '[' + prop + ']') : prop, value)
+            }
           }else{
             target[prop] = new DataSync(value, this.path ? (this.path + '.' + prop) : prop, this.onChange)
+            if (this.onChange) {
+              this.onChange(this.path ? (this.path + '.' + prop) : prop, value)
+            }
           }
         } else {
           target[prop] = value
-        }
-        if (this.onChange) {
-          this.onChange(this.path ? (this.path + '.' + prop) :prop, value)
+          if (this.onChange) {
+            this.onChange(this.path ? (this.path + '.' + prop) : prop, value)
+          }
         }
       }
       return true
@@ -59,17 +62,19 @@ export class DataSync {
    * @version 1.0.0
    */
   setProxy(target) {
-    if (typeof target === 'object') {
+    if (typeof target === 'object' && target !== null) {
       for (let prop in target) {
-        if (typeof target[prop] === 'object') {
+        if (typeof target[prop] === 'object' && target[prop] !== null) {
           if (target.isArray()){
             target[prop] = new DataSync(target[prop], this.path ? (this.path + '[' + prop + ']') : prop , this.onChange)
           }else{
             target[prop] = new DataSync(target[prop], this.path ? (this.path + '.' + prop) : prop, this.onChange)
           }
         }
-      } 
+      }
       return new Proxy(target, this.hanler)
+    }else{
+      return target
     }
   }
 }
@@ -100,9 +105,10 @@ export class UpdateData {
   }
   /**
    * 推送数据方法
+   * 必须复制一份数据到data，不能使用原数据，另外这里还有一个用处就是将Proxy对象转化为普通object，防止死循环
    */
   pushData(){
-    const res = Object.assign({}, this.dataPool)
+    let res = extend(true, {}, this.dataPool) 
     this.dataPool={}
     this.page.setData(res,()=>{
       this.checkCallBack()

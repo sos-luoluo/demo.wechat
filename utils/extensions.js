@@ -9,14 +9,33 @@
  * 数组求和
  * @param {function|string|undefined} propertyOrFunc
  */
-Array.prototype.sum = function (propertyOrFunc) {
-  var total = 0
-  for (let i = 0; i < this.length; i++) {
-    total += typeof (propertyOrFunc) === "function" ? propertyOrFunc(this[i]) : typeof (propertyOrFunc) === "string" ? this[i][propertyOrFunc] : this[i]
+Object.defineProperty(Array.prototype, 'sum', {
+  value: function () {
+    var total = 0
+    for (let i = 0; i < this.length; i++) {
+      total += typeof (propertyOrFunc) === "function" ? propertyOrFunc(this[i]) : typeof (propertyOrFunc) === "string" ? this[i][propertyOrFunc] : this[i]
+    }
+    return total
   }
-  return total
-}
+})
 
+/**
+ * 数组分组
+ * @param {function} fn
+ */
+Object.defineProperty(Array.prototype, 'groupBy', {
+  value: function (fn) {
+    const groups = {};
+    this.forEach(function (item,i) {
+      const group = JSON.stringify(fn(item, i));
+      groups[group] = groups[group] || [];
+      groups[group].push(item);
+    });
+    return Object.keys(groups).map(function (group) {
+      return groups[group];
+    });
+  }
+})
 /**
  * 获取map的长度
  */

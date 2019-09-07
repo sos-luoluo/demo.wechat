@@ -25,10 +25,8 @@ let hanler = {
           target[name](param)
         })
       }
-    } else if (target[name] && typeof target[name] === "object") {
+    } else{
       return target[name]
-    } else {
-      return null
     }
   }
 }
