@@ -1,0 +1,18 @@
+<!--pages/test/log.wxml-->
+<navbar title="日志信息"></navbar>
+<view class="log">
+  <view class="list_wrap">
+    <view class="title_box">
+      <view class="title">日志信息</view>
+    </view>
+    <view class="list_box">
+      <view class="item" wx:for="{{ajaxData.listData}}" wx:for-item="item" wx:for-index="i" wx:key="{{i}}">
+        <view class="line">
+          <view class="type">{{item.type}}</view>
+          <view class="time">{{item.time}}</view>
+        </view>
+        <view class="text">{{item.msg}}</view>
+      </view>
+    </view>
+  </view>
+</view>

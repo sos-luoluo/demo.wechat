@@ -1,5 +1,5 @@
 <!--pages/ScrollBox.wxml-->
-<view class='viewpoint' id="viewport" bindtouchstart='bindEvent' catchtouchmove='bindEvent' bindtouchend='bindEvent'>
+<view class='viewpoint' id="viewport" catchtouchstart='bindEvent' catchtouchmove='bindEvent' catchtouchend='bindEvent'>
   <view class='content' id="content" style='{{css}}'>
     <slot></slot>
   </view>

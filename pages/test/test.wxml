@@ -1,0 +1,33 @@
+<!--pages/test/test.wxml-->
+<navbar title="调试"></navbar>
+<view class="test" hover-class="none" hover-stop-propagation="false">
+  <view class="tips_wrap">
+    <view class="tips_box">
+      <view class="text">这是调试页面，请参考以下提示进行操作。</view>
+    </view>
+  </view>
+  <view class="menu_wrap">
+    <view class="menu_box">
+      <view class="line">
+        <button class="btn" type="primary" data-id="login" catchtap="event">登录</button>
+        <view class="text">执行登录方法</view>
+      </view>
+      <view class="line">
+        <button class="btn" type="primary" data-id="clearStorage" catchtap="event">清空缓存</button>
+        <view class="text">清空所有缓存</view>
+      </view>
+      <view class="line">
+        <button class="btn" type="primary" data-id="copyToken" catchtap="event">复制token</button>
+        <view class="text">复制用户凭证信息</view>
+      </view>
+      <view class="line">
+        <button class="btn" type="primary" data-id="viewLog" catchtap="event">查看日志</button>
+        <view class="text">查看用户日志信息</view>
+      </view>
+      <view class="line">
+        <button class="btn" type="primary" data-id="sendLog" catchtap="event">发送日志</button>
+        <view class="text">立即提交日志</view>
+      </view>
+    </view>
+  </view>
+</view>

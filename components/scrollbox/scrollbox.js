@@ -50,7 +50,7 @@ Component({
    */
   methods: {
     //查询父元素和子元素布局方法，在改变布局及尺寸的时候需要调用
-    resize() {
+    resize(id) {
       const queryFa = new Promise((resolve)=> {
         this.createSelectorQuery().select('#viewport').boundingClientRect((rect)=> {
           this.data.faInfo=rect
@@ -65,12 +65,18 @@ Component({
       Promise.all([queryFa, queryChild]).then(([faData,childData])=> {
         const value = faData.height - childData.height
         this.data.heightReduce = value
+        // console.log(value,this.data.bottomLock)
         if (this.data.bottomLock && value<0){
           this.data.distance = value
         }
+        // console.error('重新查询高度完成')
         this.setStyle()
-      }).catch(function() {
-        console.error('查询出错')
+        // 如果传入ID,自动滚动到底部
+        if(id) {
+          this.scrollIntoView(id)
+        }
+      }).catch(function(e) {
+        console.error('查询出错', e)
       })
     },
     //重设定位的方法
@@ -82,11 +88,13 @@ Component({
     //移动方法，传入计划移动的距离
     move(distance) {
       this.triggerEvent('scroll', {})
+      // console.log(this.data.distance, distance, this.data.heightReduce)
       if (this.data.distance + distance > 0 || this.data.heightReduce >= 0) {
         this.data.distance = 0
         this.triggerEvent('scrolltoupper', {})
         this.data.bottomLock = false
         this.stopInterval()
+        // console.log(111)
       } else if (this.data.distance + distance < this.data.heightReduce) {
         this.data.distance = this.data.heightReduce
         this.triggerEvent('scrolltolower', {})

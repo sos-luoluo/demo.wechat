@@ -1,12 +1,18 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/test/log",
+    "pages/test/test"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
+  },
+  "networkTimeout": {
+    "request": 30000,
+    "downloadFile": 30000
   },
   "usingComponents":{
     "ajaxloading": "components/ajaxloading/ajaxloading",

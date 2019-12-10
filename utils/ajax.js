@@ -342,8 +342,9 @@ export class ListAjax {
    */
   refreshPage() {
     this.listState = 0;
+    this.listStateChange(this.listState)
     this.config.current = 0;
+    this.page.dataSync.ajaxData[this.config.name] = []
     this.send();
   }
-
 }
