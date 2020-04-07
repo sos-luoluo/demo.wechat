@@ -15,7 +15,7 @@
     "downloadFile": 30000
   },
   "usingComponents":{
-    "ajaxloading": "components/ajaxloading/ajaxloading",
+    "ajaxloading": "components/ajaxLoading/ajaxloading",
     "pageloading": "components/pageloading/pageloading"
   },
   "sitemapLocation": "sitemap.json"

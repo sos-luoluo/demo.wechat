@@ -1,5 +1,5 @@
 //index.js
-import PageBase from '../../utils/pagebase.js'
+import PageBase from '../../utils/pageBase.js'
 
 Page(new PageBase({
   isNeedLogin: false,

@@ -1,5 +1,5 @@
 // pages/test/log.js
-import PageBase from '../../utils/pagebase.js'
+import PageBase from '../../utils/pageBase.js'
 import login from '../../utils/login.js'
 import wxp from '../../utils/wxp.js'
 import { key } from '../../utils/config.js'
